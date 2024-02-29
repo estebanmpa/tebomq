@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import { RetrieveAllUseCase } from "../mq/useCases/RetrieveAll";
+import { RetrieveAllUseCase } from "../mq/useCases/RetrieveAllMessages";
 import { MQController } from "../mq/controllers/mq";
 
 
