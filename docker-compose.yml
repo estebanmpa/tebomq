@@ -1,0 +1,44 @@
+services:
+  dev:
+    container_name: tebomq
+    image: tebomq-image
+    env_file:
+      - .env.local
+    build:
+      context: .
+      dockerfile: ./Dockerfile.local
+    command: yarn start:local
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    volumes:
+      - ./:/app
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    container_name: tebomq-db
+    ports:
+      - 27017:27017
+    volumes:
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+      - ./mongo-volume:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: tebomqdb
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: s3cre3t123
+    networks:
+      - app-network
+
+volumes:
+  mongo:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
