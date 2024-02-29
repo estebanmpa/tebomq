@@ -1,8 +1,9 @@
-# compiled output
+# Compiled output
 /dist
 /node_modules
 
-# docker volumes
+# Docker volumes
 /mongo-volume
-/db-volume
-/cache
+
+# Log files
+*.log

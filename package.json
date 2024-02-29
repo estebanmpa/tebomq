@@ -13,6 +13,9 @@
   "dependencies": {
     "cross-env": "^7.0.3",
     "express": "^4.18.3",
+    "inversify": "^6.0.2",
+    "inversify-express-utils": "^6.4.6",
+    "reflect-metadata": "^0.2.1",
     "rimraf": "^5.0.5",
     "socket.io": "^4.7.4"
   },

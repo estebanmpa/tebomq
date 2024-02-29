@@ -1,36 +1,36 @@
 import express from 'express';
+import { InversifyExpressServer } from 'inversify-express-utils';
 
 
 class App {
     private app: express.Application;
-    private controllers: any[];
+    private server: InversifyExpressServer;
     private listenPort: number;
+    private container: any;
 
-    constructor(controllers: any[], listenPort: number) {
-        this.controllers = controllers;
+    constructor(listenPort: number, container: any) {
         this.listenPort = listenPort;
+        this.container = container;
     }
 
     public initialize() {
         this.initializeExpress();
-        this.initializeControllers(this.controllers);
-        this.listen();
+        this.initializeInversifyExpressServer();
     }
 
-    private listen() {
-        this.app.listen(this.listenPort, () => {
-            console.log(`App listening on port ${this.listenPort}`)
-        })
+    public listen() {
+        this.server
+            .build()
+            .listen(this.listenPort);
+        console.log(`App listening on port ${this.listenPort}`)
     }
 
     private initializeExpress() {
         this.app = express();
     }
 
-    private initializeControllers(controllers: any[]) {
-        controllers.forEach(controller => {
-            this.app.use('/api', controller.router)
-        })
+    private initializeInversifyExpressServer() {
+        this.server = new InversifyExpressServer(this.container, null, { rootPath: "/api" }, this.app);
     }
 }
 

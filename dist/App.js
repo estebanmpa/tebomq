@@ -4,28 +4,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const inversify_express_utils_1 = require("inversify-express-utils");
 class App {
-    constructor(controllers, listenPort) {
-        this.controllers = controllers;
+    constructor(listenPort, container) {
         this.listenPort = listenPort;
+        this.container = container;
     }
     initialize() {
-        this.app = (0, express_1.default)();
-        this.initializeControllers(this.controllers);
-        this.listen();
+        this.initializeExpress();
+        this.initializeInversifyExpressServer();
     }
     listen() {
-        this.app.listen(this.listenPort, () => {
-            console.log(`App listening on port ${this.listenPort}`);
-        });
+        this.server
+            .build()
+            .listen(this.listenPort);
+        console.log(`App listening on port ${this.listenPort}`);
     }
     initializeExpress() {
         this.app = (0, express_1.default)();
     }
-    initializeControllers(controllers) {
-        controllers.forEach(controller => {
-            this.app.use('/api', controller.router);
-        });
+    initializeInversifyExpressServer() {
+        this.server = new inversify_express_utils_1.InversifyExpressServer(this.container, null, { rootPath: "/api" }, this.app);
     }
 }
 exports.default = App;
