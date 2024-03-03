@@ -7,7 +7,8 @@ const App_1 = __importDefault(require("./App"));
 const Config_1 = __importDefault(require("./config/Config"));
 const inversify_config_1 = __importDefault(require("./config/inversify.config"));
 const listenPort = Config_1.default.getInstance().getListenPort();
-const app = new App_1.default(listenPort, inversify_config_1.default);
+const connectionString = Config_1.default.getInstance().getMongoConnectionString();
+const app = new App_1.default(listenPort, inversify_config_1.default, connectionString);
 app.initialize();
 app.listen();
 //# sourceMappingURL=server.js.map
